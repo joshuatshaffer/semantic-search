@@ -1,7 +1,7 @@
 from task_log import start_task, end_task
 
 start_task("Importing sentence_transformers")
-from sentence_transformers import SentenceTransformer
+from sentence_transformers import SentenceTransformer, util
 
 end_task()
 
@@ -42,4 +42,9 @@ start_task("Computing embeddings")
 embeddings = model.encode(sentences)
 end_task()
 
-print(embeddings)
+start_task("Computing similarities")
+similarities = [util.cos_sim(embeddings[-1], e) for e in embeddings]
+end_task()
+
+for s, e in sorted(zip(sentences, similarities), key=(lambda x: x[1]), reverse=True):
+    print(e[0][0], s)

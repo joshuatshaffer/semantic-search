@@ -12,4 +12,4 @@ def start_task(task_name: str):
 
 def end_task():
     task_end = time.perf_counter_ns()
-    print(f"✓ in {round(task_end - task_start, 2):,d} nanoseconds")
+    print(f"✓ in {task_end - task_start:,d} nanoseconds")

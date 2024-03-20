@@ -45,19 +45,17 @@ start_task("Computing embeddings")
 embeddings = model.encode(sentences)
 end_task()
 
-dimensions = len(embeddings[0])
-
 
 start_task("Inserting into database")
 
 with db_connect() as conn:
     with conn.cursor() as cur:
-        cur.execute("CREATE EXTENSION vector;")
+        cur.execute("CREATE EXTENSION if not exists vector;")
         cur.execute(
-            f"""
+            """
                 create table if not exists chunks (
                     id bigserial primary key,
-                    embedding vector ({dimensions}),
+                    embedding vector (384),
                     text text
                 );
             """
@@ -68,6 +66,5 @@ with db_connect() as conn:
                 "insert into chunks (embedding, text) values (%s, %s);",
                 ([float(e) for e in embedding], sentence),
             )
-
 
 end_task()

@@ -1,0 +1,9 @@
+version: "3.7"
+
+services:
+  db:
+    image: pgvector/pgvector:pg16
+    environment:
+      POSTGRES_PASSWORD: kjguvkuvrstyt
+    ports:
+      - "5432:5432"

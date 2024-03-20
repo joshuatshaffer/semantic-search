@@ -9,9 +9,3 @@ def db_connect():
         host="localhost",
         port="5432",
     )
-
-
-with db_connect() as conn:
-    with conn.cursor() as cur:
-        cur.execute("SELECT NOW()")
-        print(cur.fetchall())

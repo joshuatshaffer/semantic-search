@@ -1,6 +1,9 @@
+from db import db_connect
 from task_log import start_task, end_task
 
+
 start_task("Importing sentence_transformers")
+
 from sentence_transformers import SentenceTransformer, util
 
 end_task()
@@ -42,9 +45,29 @@ start_task("Computing embeddings")
 embeddings = model.encode(sentences)
 end_task()
 
-start_task("Computing similarities")
-similarities = [util.cos_sim(embeddings[-1], e) for e in embeddings]
-end_task()
+dimensions = len(embeddings[0])
 
-for s, e in sorted(zip(sentences, similarities), key=(lambda x: x[1]), reverse=True):
-    print(e[0][0], s)
+
+start_task("Inserting into database")
+
+with db_connect() as conn:
+    with conn.cursor() as cur:
+        cur.execute("CREATE EXTENSION vector;")
+        cur.execute(
+            f"""
+                create table if not exists chunks (
+                    id bigserial primary key,
+                    embedding vector ({dimensions}),
+                    text text
+                );
+            """
+        )
+
+        for sentence, embedding in zip(sentences, embeddings):
+            cur.execute(
+                "insert into chunks (embedding, text) values (%s, %s);",
+                ([float(e) for e in embedding], sentence),
+            )
+
+
+end_task()

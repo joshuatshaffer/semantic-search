@@ -38,7 +38,13 @@ def load_play(file_name):
             with conn.cursor() as cur:
                 for (xpath, text), embedding in zip(lines, embeddings):
                     cur.execute(
-                        "insert into chunks (embedding, file_name, xpath, text) values (%s, %s, %s, %s);",
+                        """
+                            INSERT INTO chunks (embedding, file_name, xpath, text)
+                            VALUES (%s, %s, %s, %s)
+                            ON CONFLICT (file_name, xpath) DO UPDATE SET
+                                embedding = EXCLUDED.embedding,
+                                text = EXCLUDED.text;
+                        """,
                         ([float(e) for e in embedding], file_name, xpath, text),
                     )
 

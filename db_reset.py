@@ -11,9 +11,10 @@ def db_reset():
                     CREATE TABLE chunks (
                         id bigserial PRIMARY KEY,
                         embedding vector(384),
-                        file_name text,
-                        xpath text,
-                        text text
+                        file_name text NOT NULL,
+                        xpath text NOT NULL,
+                        text text,
+                        UNIQUE (file_name, xpath)
                     );
                 """
             )

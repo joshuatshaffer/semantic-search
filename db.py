@@ -1,9 +1,9 @@
-import psycopg2
-from pgvector.psycopg2 import register_vector
+import psycopg
+from pgvector.psycopg import register_vector
 
 
 def db_connect():
-    conn = psycopg2.connect(
+    conn = psycopg.connect(
         dbname="postgres",
         user="postgres",
         password="kjguvkuvrstyt",

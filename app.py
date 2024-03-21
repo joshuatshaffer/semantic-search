@@ -15,8 +15,7 @@ def search():
     canonical_url = url_for("search", q=q if q else None)
 
     if len(q) > 0:
-        model = load_embedding_model()
-        query_embedding = model.encode([q])[0]
+        query_embedding = load_embedding_model().encode(q)
         with db_connect() as conn:
             with conn.cursor() as cur:
                 cur.execute(

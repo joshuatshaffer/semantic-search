@@ -34,7 +34,7 @@ def load_play(file_name):
                                 embedding = EXCLUDED.embedding,
                                 text = EXCLUDED.text;
                         """,
-                        ([float(e) for e in embedding], file_name, xpath, text),
+                        (embedding, file_name, xpath, text),
                     )
 
 

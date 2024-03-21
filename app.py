@@ -16,16 +16,17 @@ def search():
 
     if len(q) > 0:
         model = load_embedding_model()
+        query_embedding = model.encode([q])[0]
         with db_connect() as conn:
             with conn.cursor() as cur:
                 cur.execute(
                     """
                         SELECT file_name, xpath, text, embedding
                         FROM chunks
-                        ORDER BY embedding <-> %s::vector, id
+                        ORDER BY embedding <-> %s, id
                         LIMIT 10;
                     """,
-                    ([float(e) for e in model.encode([q])[0]],),
+                    (query_embedding,),
                 )
                 results = cur.fetchall()
     else:

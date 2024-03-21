@@ -2,15 +2,21 @@
 <html>
   <head>
     <title>Semantic search</title>
+    <link rel="canonical" href="{{ canonical_url }}" />
   </head>
   <body>
     <form>
-      <input
-        type="text"
-        name="q"
-        value="{{ request.args.get('q') | default('', true) }}"
-      />
+      <input type="text" name="q" value="{{ q }}" />
       <input type="submit" />
     </form>
+    <ul>
+      {% for result in results %}
+      <li>
+        <code>{{ result[0] }}</code>
+        <code>{{ result[1] }}</code>
+        {{ result[2] }}
+      </li>
+      {% endfor %}
+    </ul>
   </body>
 </html>

@@ -1,20 +1,9 @@
 import os
 from db import db_connect
+from embedding import load_embedding_model
 from task_log import task
 from lxml import etree
 from multiprocessing import Pool
-
-cached_model = None
-
-
-def load_model():
-    global cached_model
-    if cached_model is None:
-        with task("Importing sentence_transformers"):
-            from sentence_transformers import SentenceTransformer
-        with task("Loading model"):
-            cached_model = SentenceTransformer("sentence-transformers/all-MiniLM-L6-v2")
-    return cached_model
 
 
 def load_play(file_name):
@@ -28,7 +17,7 @@ def load_play(file_name):
             for line in tree.findall("//SPEECH/LINE")
         ]
 
-    model = load_model()
+    model = load_embedding_model()
 
     with task("Computing embeddings"):
         embeddings = model.encode([text for (_, text) in lines])

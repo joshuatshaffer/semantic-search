@@ -1,0 +1,12 @@
+.line {
+  margin: 0;
+}
+
+.stagedir {
+  font-style: italic;
+}
+
+.speech > .line,
+.speech > .stagedir {
+  margin-left: 4em;
+}

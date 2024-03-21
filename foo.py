@@ -3,10 +3,10 @@ import os
 
 
 def shakespeare_lines():
-    for file_name in os.listdir("shaks200"):
+    for file_name in os.listdir("static/shaks200"):
         if not file_name.endswith(".xml"):
             continue
-        tree = etree.parse("shaks200/" + file_name)
+        tree = etree.parse("static/shaks200/" + file_name)
         for line in tree.findall("//SPEECH/LINE"):
             yield (
                 file_name,

@@ -20,14 +20,26 @@ def search():
             with conn.cursor() as cur:
                 cur.execute(
                     """
-                        SELECT file_name, xpath, text, embedding
+                        SELECT file_name, xpath, text
                         FROM chunks
                         ORDER BY embedding <-> %s, id
                         LIMIT 10;
                     """,
                     (query_embedding,),
                 )
-                results = cur.fetchall()
+                results = [
+                    dict(
+                        file_name=file_name,
+                        xpath=xpath,
+                        text=text,
+                        url=url_for(
+                            "static",
+                            filename=f"shaks200/{file_name}",
+                            _anchor=f"xpointer({xpath})",
+                        ),
+                    )
+                    for file_name, xpath, text in cur.fetchall()
+                ]
     else:
         results = []
 

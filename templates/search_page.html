@@ -12,9 +12,11 @@
     <ul>
       {% for result in results %}
       <li>
-        <code>{{ result[0] }}</code>
-        <code>{{ result[1] }}</code>
-        {{ result[2] }}
+        <a href="{{ result.url }}"
+          ><code>{{ result.file_name }}</code>
+          <code>{{ result.xpath }}</code></a
+        >
+        {{ result.text }}
       </li>
       {% endfor %}
     </ul>

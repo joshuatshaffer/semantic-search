@@ -8,7 +8,7 @@ from multiprocessing import Pool
 
 def load_play(file_name):
     with task("Loading lines"):
-        tree = etree.parse("shaks200/" + file_name)
+        tree = etree.parse("static/shaks200/" + file_name)
         lines = [
             (
                 str(tree.getpath(line)),
@@ -44,7 +44,7 @@ if __name__ == "__main__":
             load_play,
             [
                 file_name
-                for file_name in os.listdir("shaks200")
+                for file_name in os.listdir("static/shaks200")
                 if file_name.endswith(".xml")
             ],
         )

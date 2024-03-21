@@ -1,8 +1,8 @@
+import os
 from db import db_connect
 from task_log import task
 from lxml import etree
-import sys
-
+from multiprocessing import Pool
 
 cached_model = None
 
@@ -44,7 +44,12 @@ def load_play(file_name):
 
 
 if __name__ == "__main__":
-    for file_name in sys.argv[1:]:
-        if not file_name.endswith(".xml"):
-            continue
-        load_play(file_name)
+    with Pool(processes=8) as pool:
+        pool.map(
+            load_play,
+            [
+                file_name
+                for file_name in os.listdir("shaks200")
+                if file_name.endswith(".xml")
+            ],
+        )

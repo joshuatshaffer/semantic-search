@@ -5,7 +5,11 @@
   </head>
   <body>
     <form>
-      <input type="text" name="q" value="{{ request.args.get('q') }}" />
+      <input
+        type="text"
+        name="q"
+        value="{{ request.args.get('q') | default('', true) }}"
+      />
       <input type="submit" />
     </form>
   </body>
